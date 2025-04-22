@@ -1,0 +1,52 @@
+/* HostEvent.css */
+
+.host-event-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .host-event-title {
+    text-align: center;
+    color: #2575fc;
+    margin-bottom: 25px;
+    font-size: 28px;
+  }
+  
+  .host-event-form input,
+  .host-event-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: inherit;
+  }
+  
+  .host-event-form textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  .host-event-form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .host-event-form button:hover {
+    background-color: #0053d9;
+  }
+  

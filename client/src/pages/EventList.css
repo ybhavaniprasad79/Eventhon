@@ -1,0 +1,80 @@
+/* EventList.css */
+
+.event-list-container {
+    padding: 40px 20px;
+    min-height: 100vh;
+    background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+  }
+  
+  .event-list-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 30px;
+  }
+  
+  .event-list-empty {
+    text-align: center;
+    font-size: 18px;
+  }
+  
+  .event-list-card {
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 12px;
+    padding: 20px 25px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .event-list-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .event-card-title {
+    font-size: 24px;
+    color: #2575fc;
+    margin-bottom: 10px;
+  }
+  
+  .event-card-description {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .event-card-detail {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  
+  .event-card-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2575fc;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .event-card-button2 {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #bd1818;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .event-card-button:hover {
+    background-color: #0053d9;
+  }
+  
