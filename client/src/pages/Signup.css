@@ -1,60 +1,141 @@
-/* Signup.css */
+/* General Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
 
+/* Signup Container */
 .signup-container {
-    height: 100vh;
-    background: linear-gradient(to bottom right, #004aad, #cb6ce6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #004aad, #cb6ce6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+
+/* Signup Form */
+.signup-form {
+  background-color: #ffffff;
+  padding: 40px 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  transition: all 0.3s ease;
+}
+
+.signup-form:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.signup-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+/* Input Fields */
+.signup-input {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.signup-input:focus {
+  border-color: #004aad;
+  outline: none;
+}
+
+.signup-input::placeholder {
+  color: #aaa;
+}
+
+/* Checkbox Label */
+label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* Button */
+.signup-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #004aad;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.signup-button:hover {
+  background-color: #00337a;
+  transform: translateY(-2px);
+}
+
+.signup-button:active {
+  transform: translateY(1px);
+}
+
+/* Message */
+.signup-message {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 16px;
+  color: #ff4d4d;
+}
+
+/* Add subtle animation on form load */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .signup-form {
-    background-color: white;
-    padding: 40px 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .signup-title {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 28px;
-    color: #333;
-  }
-  
-  .signup-input {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-  
-  .signup-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #004aad;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .signup-button:hover {
-    background-color: #00337a;
-  }
-  
-  .signup-message {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 14px;
-    color: #444;
-  }
+}
+
+.signup-form {
+  animation: fadeIn 0.5s ease-out;
+}
 
 
-  
+/* Add space between the checkbox and the text */
+label input {
+  margin-right: 10px; /* Adjust the value as needed */
+}
+
+
+.login-footer {
+  text-align: center;
+  margin-top: 15px;
+  color: #555;
+  font-size: 14px;
+}
+
+.login-footer span {
+  color: #2575fc;
+  cursor: pointer;
+  font-weight: 500;
+  transition: text-decoration 0.2s;
+}
+
+.login-footer span:hover {
+  text-decoration: underline;
+}

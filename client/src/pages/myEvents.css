@@ -1,74 +1,229 @@
-/* MyEvents.css */
+/* myEvents.css */
 
 .my-events-container {
-    padding: 40px 20px;
-    min-height: 100vh;
-    background: linear-gradient(to bottom right, #004aad, #cb6ce6);
-    color: #fff;
-    font-family: 'Segoe UI', sans-serif;
-  }
-  
-  .my-events-title {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 30px;
-  }
-  
-  .no-events-text {
-    text-align: center;
-    font-size: 18px;
-    color: #f0f0f0;
-  }
-  
-  .event-card {
-    background-color: white;
-    color: #333;
-    border-radius: 12px;
-    padding: 20px 25px;
-    margin: 20px auto;
-    max-width: 600px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .event-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .event-title {
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: #004aad;
-  }
-  
-  .event-description {
-    margin-bottom: 10px;
-    font-size: 16px;
-  }
-  
-  .event-participants {
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .participants-details summary {
-    cursor: pointer;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #004aad;
-  }
-  
-  .no-participants-text {
-    font-style: italic;
-    margin-top: 10px;
-  }
-  
-  .participants-list {
-    margin-top: 10px;
-    padding-left: 20px;
-  }
-  
-  .participants-list li {
-    margin-bottom: 5px;
-  }
-  
+  min-height: 100vh;
+  background-color: #f0f2f5;
+  padding: 5px 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.my-events-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #222;
+}
+
+/* Filters Section */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+.search-bar {
+  padding: 0.7rem 1rem;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-bar:focus {
+  border-color: #007bff;
+}
+
+.category-buttons,
+.payment-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.category-buttons button,
+.payment-buttons button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.category-buttons button:hover,
+.payment-buttons button:hover {
+  background-color: #99cfb6;
+  color: rgb(214, 53, 53);
+  border-color: #6ba2dd;
+}
+
+/* Event Card Styling */
+.event-card {
+  background: linear-gradient(145deg, #f9fbfd, #eef3f8);
+  border: 1px solid #d6e0eb;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  margin-bottom: 2rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.event-title {
+  font-size: 1.75rem;
+  color: #1d3557;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+}
+
+.event-description {
+  font-size: 1.05rem;
+  color: #34495e;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.event-category,
+.event-payment,
+.event-participants {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+  padding-left: 0.2rem;
+  border-left: 3px solid #a8dadc;
+  padding-left: 0.5rem;
+}
+
+/* Participants Section */
+.participants-details {
+  margin-top: 1rem;
+}
+
+.participants-details .search-bar {
+  display: block;
+  margin: 10px auto;
+  width: 60%; /* adjust as needed */
+  text-align: center;
+}
+
+.participants-details summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.participants-details summary:hover {
+  background-color: #8abaee; /* hover background */
+  color: #ffffff;            /* hover text color */
+}
+
+
+.participants-list {
+  margin-top: 0.5rem;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.participants-list li {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-user-button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.remove-user-button:hover {
+  background-color: #e63946;
+}
+
+.no-events-text,
+.no-participants-text {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+/* Action Buttons */
+.event-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
+}
+
+.update-button {
+  background-color: #00b894;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.update-button:hover {
+  background-color: #019875;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+.participant-name {
+  font-weight: 600;
+  color: #1d3557; /* deep blue or any color you prefer */
+}
+
+.participant-email {
+  font-style: italic;
+  color: #6c757d; /* soft gray */
+}
+
+.participants-list a{
+  color: #035794 !important; /* Replace with any color you prefer */
+  text-decoration: underline; /* Optional: underline to indicate a link */
+}
+
+.participants-list a:hover {
+  color: #0a99ff; /* Optional: color on hover */
+}
