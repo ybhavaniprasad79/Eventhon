@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './OtpVerifyPage.css';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { bgimage } from '../assets/image/index'; // Import your background image
 
 const OtpVerifyPage = () => {
   const [otp, setOtp] = useState(Array(6).fill(''));
@@ -28,7 +28,6 @@ const OtpVerifyPage = () => {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
 
-    // Check if all digits are filled
     if (newOtp.every((digit) => digit !== '')) {
       handleVerify(newOtp.join(''));
     }
@@ -52,39 +51,68 @@ const OtpVerifyPage = () => {
       setMessage(response.data.message);
       navigate('/login');
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Something went wrong');
+      setMessage(error.response?.data?.message || 'Invalid OTP, please try again');
+      setOtp(Array(6).fill(''));
+      document.getElementById(`otp-input-0`).focus();
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="otp-container">
-      <form className="otp-form" onSubmit={(e) => e.preventDefault()}>
-        <h2>OTP Verification</h2>
-        <div className="otp-inputs">
-          {otp.map((digit, index) => (
-            <input
-              key={index}
-              type="text"
-              id={`otp-input-${index}`}
-              value={digit}
-              onChange={(e) => handleChange(e, index)}
-              maxLength="1"
-              required
-              autoFocus={index === 0}
-            />
-          ))}
-        </div>
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      height: "100vh",
+      width: "100vw",
+      backgroundImage: `url(${bgimage})`,
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "center"
+    }}>
+      <div style={{
+        width: "400px",
+        backgroundColor: "white",
+        borderRadius: "10px",
+        boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
+        padding: "30px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}>
+        <h2 style={{ marginBottom: "20px", fontFamily: "Nunito", fontWeight: "bold" }}>
+          OTP Verification
+        </h2>
 
-        {/* You can hide this button or keep it just in case */}
-        {/* <button type="submit" disabled={loading}>
-          {loading ? 'Verifying...' : 'Verify OTP'}
-        </button> */}
+        <form style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }} onSubmit={(e) => e.preventDefault()}>
+          <div style={{ display: "flex", gap: "10px" }}>
+            {otp.map((digit, index) => (
+              <input
+                key={index}
+                type="text"
+                id={`otp-input-${index}`}
+                value={digit}
+                onChange={(e) => handleChange(e, index)}
+                maxLength="1"
+                required
+                autoFocus={index === 0}
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  textAlign: "center",
+                  fontSize: "1.5rem",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc"
+                }}
+              />
+            ))}
+          </div>
 
-        {loading && <p>Verifying...</p>}
-        {message && <p className="message">{message}</p>}
-      </form>
+          {loading && <p style={{ color: "blue" }}>Verifying...</p>}
+          {message && <p style={{ color: message.includes('success') ? "green" : "red", fontWeight: "bold" }}>{message}</p>}
+        </form>
+      </div>
     </div>
   );
 };
