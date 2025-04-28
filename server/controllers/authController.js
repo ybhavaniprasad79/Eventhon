@@ -80,12 +80,12 @@ export const loginUser = async (req, res) => {
 
     const token = generateToken(user._id, user.role, user.name, user.email);
 
-    res.cookie("accesstoken", token, {
+    res.cookie('accesstoken', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax"
-    });
-
+      secure: true,             // <--- Important: true because Netlify is HTTPS
+      sameSite: 'None',          // <--- Important: allow cross-site cookies
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
     res.status(200).json({ user: { name: user.name, email: user.email, role: user.role }, token });
   } catch (err) {
     res.status(500).json({ message: 'Error logging in', error: err.message });
@@ -170,12 +170,12 @@ export const googleAuthCallback = async (req, res) => {
 
     const token = generateToken(existingUser._id, existingUser.role, existingUser.name, existingUser.email);
 
-    res.cookie("accesstoken", token, {
+    res.cookie('accesstoken', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-    });
-
+      secure: true,             // <--- Important: true because Netlify is HTTPS
+      sameSite: 'None',          // <--- Important: allow cross-site cookies
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
     res.redirect(`https://eventhon.netlify.app/google-success?token=${token}`);
 
   } catch (err) {
