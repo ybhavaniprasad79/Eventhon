@@ -176,7 +176,7 @@ export const googleAuthCallback = async (req, res) => {
       sameSite: "lax",
     });
 
-    res.redirect(`http://localhost:5173/google-success?token=${token}`);
+    res.redirect(`https://eventhon.netlify.app/google-success?token=${token}`);
 
   } catch (err) {
     console.error("Google Auth Error:", err);

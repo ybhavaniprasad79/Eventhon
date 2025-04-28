@@ -12,7 +12,7 @@ router.get("/google", passport.authenticate("google", { scope: ["profile", "emai
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { session: false, failureRedirect: "http://localhost:5173/login" }),
+  passport.authenticate("google", { session: false, failureRedirect: "https://eventhon.netlify.app/login" }),
   // <-- add this middleware to log req.user
   (req, res, next) => {
     console.log("User object:", req.user);
