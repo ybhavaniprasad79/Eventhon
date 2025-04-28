@@ -11,7 +11,9 @@ const app = express();
 app.use(cors({
     origin: "https://eventhon.netlify.app",
     credentials: true
-}));
+}));     
+
+
 
 
 app.use(express.json());
