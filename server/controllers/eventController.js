@@ -39,10 +39,7 @@ export const createEvent = async (req, res) => {
 
     await newEvent.save();
 
-    const eventWithOrganizer = await Event.findById(newEvent._id).populate('organizer', 'name email');
-
-
-    res.status(201).json(eventWithOrganizer);
+    res.status(201).json({ message: 'Event created successfully' });
   } catch (e) {
     res.status(500).json({ message: 'Error creating event', error: e.message });
   }
@@ -75,10 +72,7 @@ export const createScholarship = async (req, res) => {
 
     await newEvent.save();
 
-    // Optionally populate the organizer when returning the new event
-    const eventWithOrganizer = await Scholarship.findById(newEvent._id).populate('organizer', 'name email');
-    
-    res.status(201).json(eventWithOrganizer);
+    res.status(201).json({ message: 'Scholarship created successfully' });
   } catch (e) {
     res.status(500).json({ message: 'Error creating event', error: e.message });
   }
@@ -125,15 +119,15 @@ export const registerForEvent = async (req, res) => {
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
     if (event.organizer.toString() === userId) {
-      return res.status(400).json({ message: "Organizers cannot register for their own event" });
+      return res.status(403).json({ message: "Organizers cannot register for their own event" });
     }
 
     if (event.participants.includes(userId)) {
-      return res.status(400).json({ message: 'User already registered' });
+      return res.status(409).json({ message: 'User already registered' });
     }
 
     if (event.participants.length >= event.maxParticipants) {
-      return res.status(400).json({ message: 'Event is full' });
+      return res.status(409).json({ message: 'Event is full' });
     }
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
@@ -184,12 +178,12 @@ export const registerForScholarship = async (req, res) => {
     if (!event) return res.status(404).json({ message: 'Scholarship not found' });
 
     if (event.organizer.toString() === userId) {
-      return res.status(400).json({ message: "Organizers cannot register for their own Scholarship" });
+      return res.status(403).json({ message: "Organizers cannot register for their own Scholarship" });
     }
 
 
     if (event.participants.includes(userId)) {
-      return res.status(400).json({ message: 'User already registered' });
+      return res.status(409).json({ message: 'User already registered' });
     }
   
     event.participants.push(userId);
@@ -342,7 +336,7 @@ export const cancelRegistration = async (req, res) => {
 
     const index = event.participants.indexOf(userId);
     if (index === -1) {
-      return res.status(400).json({ message: 'User is not registered for this event' });
+      return res.status(409).json({ message: 'User is not registered for this event' });
     }
     const user = await User.findById(userId);
     if (!user) return res.status(404).json({ message: 'User not found' });
