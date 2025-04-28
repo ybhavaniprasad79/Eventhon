@@ -1,92 +1,168 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './Signup.css'; // Import the enhanced styles
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {logo, bgimage} from "../assets/image/index";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
-const Signup = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState(['user']);
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+export default function Signup() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [role, setRole] = useState(["user"]); // Added role field
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
 
-    const formData = { name, email, password, role };
+    const isValidEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
 
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/register', formData,{
-        withCredentials: true
-      });
-      console.log(res.data);
-      setName('');
-      setEmail('');
-      setPassword('');
-      setRole(['user']);
-      navigate('/otp-verfy');
-    } catch (error) {
-      console.error(error);
-      setMessage(error.response?.data?.message || 'Registration failed');
-    }
-  };
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        setMessage("");
 
-  return (
-    <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <h2 className="signup-title">Sign Up</h2>
+        if (!isValidEmail(email)) {
+            setMessage("Please enter a valid email address.");
+            return;
+        }
 
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full Name"
-          required
-          className="signup-input"
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email Address"
-          required
-          className="signup-input"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Create Password"
-          required
-          className="signup-input"
-        />
+        const formData = { name, email, password, role };
 
-        <label>
-          <input
-            type="checkbox"
-            checked={role.includes("Organizer")}
-            onChange={(e) => {
-              if (e.target.checked) {
-                setRole(["Organizer", "user"]);
-              } else {
-                setRole(["user"]);
-              }
+        try {
+            const res = await axios.post(
+                "http://localhost:5000/api/auth/register",
+                formData,
+                { withCredentials: true } // if backend uses cookies/sessions
+            );
 
-            }}
-          />
-          Check if you want to host events on our platform
-        </label>
+            setMessage("Signup successful! Redirecting to OTP...");
+            setTimeout(() => navigate("/otp-verfy"), 2000);
+        } catch (error) {
+            if (error.response?.status === 409) {
+                setMessage("User already exists. Redirecting to login...");
+                setTimeout(() => navigate("/"), 2000);
+            } else {
+                setMessage(error.response?.data?.message || "Signup failed. Try again.");
+            }
+        }
+    };
 
-        <button type="submit" className="signup-button">Register</button>
-        <div className="login-footer">
-          Already have an account?{' '}
-          <span onClick={() => navigate('/login')}>Login here</span>
-          </div>
-        {message && <p className="signup-message">{message}</p>}
-      </form>
-    </div>
-  );
-};
+    return (
+        <div style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            width: "100vw",
+            backgroundImage: `url(${bgimage})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center"
+        }}>
+            <div style={{
+                display: "flex",
+                width: "800px",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                boxShadow: "0px 4px 20px rgba(0,0,0,0.3)",
+                overflow: "hidden"
+            }}>
+                <div style={{
+                    width: "50%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    padding: "30px",
+                    backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)"
+                }}>
+                    <img src={logo} alt="Logo" style={{ width: "100px", height: "100px", borderRadius: "50%", marginBottom: "20px" }} />
+                    <h2 style={{ color: "white", fontWeight: "bold", textAlign: "center" }}>Join Us!</h2>
+                </div>
+                <div style={{
+                    width: "50%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    padding: "30px",
+                    textAlign: "center",
+                    backgroundColor: "#f4f4f4"
+                }}>
+                    <h3 style={{
+                        fontFamily: "Nunito",
+                        fontWeight: "bold",
+                        fontSize: "1.8rem",
+                        backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)",
+                        WebkitBackgroundClip: "text",
+                        color: "transparent"
+                    }}>Sign Up</h3>
+                    {message && <p style={{ color: "red", fontWeight: "bold" }}>{message}</p>}
+                    <form onSubmit={handleSignup} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+                        <input
+                            type="text"
+                            placeholder="Full Name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                            style={{ padding: "12px", borderRadius: "5px", border: "1px solid #ccc", fontSize: "1rem" }}
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email ID"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                            style={{ padding: "12px", borderRadius: "5px", border: "1px solid #ccc", fontSize: "1rem" }}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Enter Your Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            style={{ padding: "12px", borderRadius: "5px", border: "1px solid #ccc", fontSize: "1rem" }}
+                        />
 
-export default Signup;
+                        {/* Role toggle checkbox */}
+                        <label style={{ fontSize: "0.9rem", textAlign: "left" }}>
+                            <input
+                                type="checkbox"
+                                checked={role.includes("Organizer")}
+                                onChange={(e) => {
+                                    if (e.target.checked) {
+                                        setRole(["Organizer", "user"]);
+                                    } else {
+                                        setRole(["user"]);
+                                    }
+                                }}
+                            />{" "}
+                            Check if you want to host events on our platform
+                        </label>
+
+                        <button type="submit" style={{
+                            padding: "12px",
+                            borderRadius: "5px",
+                            backgroundImage: "linear-gradient(62deg, #8EC5FC 0%, #e0c3fc 100%)",
+                            color: "white",
+                            fontWeight: "bold",
+                            cursor: "pointer",
+                            fontSize: "1rem",
+                            transition: "0.3s"
+                        }}>
+                            Sign Up
+                        </button>
+                    </form>
+                    <p style={{ marginTop: "10px", fontSize: "0.9rem" }}>
+                        Already have an account?{" "}
+                        <span style={{ color: "#007BFF", cursor: "pointer", fontWeight: "bold" }} onClick={() => navigate("/login")}>
+                            Login
+                        </span>
+                    </p>
+
+                    <GoogleSignInButton/>
+                </div>
+            </div>
+        </div>
+    );
+}

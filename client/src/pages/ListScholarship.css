@@ -1,96 +1,86 @@
 .event-list-container {
-    background-color: #121b29;
-    color: #fff;
-    padding: 2rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  .event-list-title {
-    font-size: 2rem;
-    color: #00e6ff;
-    margin-bottom: 2rem;
-  }
-  
-  .event-list-empty {
-    color: #aaa;
-    text-align: center;
-  }
-  
-  .event-list-card {
-    background-color: #1e293b;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    border: 1px solid #2c3e50;
-    position: relative;
-    transition: transform 0.3s ease;
-  }
-  
-  .event-list-card:hover {
-    transform: translateY(-4px);
-  }
-  
-  .event-card-title {
-    color: #00e6ff;
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .event-card-title::before {
-    content: "🚀 ";
-  }
-  
-  .event-card-degrees,
-  .event-card-courses,
-  .event-card-nationalities,
-  .event-card-funding,
-  .event-card-deadline {
-    margin: 0.3rem 0;
-    font-size: 0.95rem;
-    color: #d1d5db;
-  }
-  
-  .event-card-degrees::before {
-    content: "📜 ";
-  }
-  
-  .event-card-courses::before {
-    content: "📚 ";
-  }
-  
-  .event-card-nationalities::before {
-    content: "🌐 ";
-  }
-  
-  .event-card-funding::before {
-    content: "💰 ";
-  }
-  
-  .event-card-deadline::before {
-    content: "⏳ ";
-  }
-  
-  .event-card-button,
-  .event-card-button2 {
-    margin-top: 1rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .event-card-button {
-    background-color: #00e6ff;
-    color: #000;
-  }
-  
-  .event-card-button2 {
-    background-color: #ff5252;
-    color: #fff;
-  }
-  
+  background-color: #f0f4f8;
+  color: #1e293b;
+  padding: 3rem 2rem;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.event-list-title {
+  font-size: 2.5rem;
+  color: black;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+}
+
+.event-list-empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #94a3b8;
+}
+
+.event-list-card {
+  background-color: white;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 1.5rem auto;
+  max-width: 800px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid #94abe0;
+  transition: transform 0.3s ease, border 0.3s ease;
+  color: #1e293b;
+}
+
+.event-list-card:hover {
+  transform: scale(1.02);
+  border-color: #010915;
+}
+
+.event-card-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.event-card-degrees,
+.event-card-courses,
+.event-card-nationalities,
+.event-card-funding,
+.event-card-deadline {
+  margin: 0.6rem 0;
+  font-size: 1rem;
+  color: #1e293b;
+}
+
+.event-card-button,
+.event-card-button2 {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.event-card-button {
+  background: linear-gradient(to right, #7dd3fc, #34d399);
+  color: #000;
+}
+
+.event-card-button:hover {
+  background: #34d399;
+  color: #fff;
+}
+
+.event-card-button2 {
+  background: linear-gradient(to right, #fb7185, #f43f5e);
+  color: #fff;
+}
+
+.event-card-button2:hover {
+  background: #e11d48;
+}

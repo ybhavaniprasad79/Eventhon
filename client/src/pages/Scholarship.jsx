@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Scholarship.css'; // ✅ Link to the CSS below
+import './Scholarship.css';
+import { useNavigate } from 'react-router-dom';
+import { PulseLoader } from 'react-spinners';
 
 const HostScholarship = () => {
   const [title, setTitle] = useState('');
@@ -9,12 +11,14 @@ const HostScholarship = () => {
   const [nationalities, setNationalities] = useState('');
   const [funding, setFunding] = useState('');
   const [deadline, setDeadline] = useState('');
+  const Navigate = useNavigate();
+  const [load, setLoad] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     const organizerId = JSON.parse(atob(token.split('.')[1])).id;
-
+    setLoad(true)
     try {
       await axios.post('http://localhost:5000/api/events/createScholarship', {
         title,
@@ -27,10 +31,21 @@ const HostScholarship = () => {
       }, {
         withCredentials: true
       });
-      alert('Scholarship created successfully!');
+      // alert('Scholarship created successfully!');
+      Navigate("/scholarship")
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to create scholarship');
+    } finally {
+      setLoad(false);
     }
+
+    // console.log({title,
+    //   degrees,
+    //   courses,
+    //   nationalities,
+    //   funding,
+    //   deadline,
+    //   organizerId})
   };
 
   return (
@@ -78,6 +93,15 @@ const HostScholarship = () => {
         onChange={(e) => setDeadline(e.target.value)}
         required
       />
+      {load && <PulseLoader
+        color="chocolate"
+        loading={load}
+        // cssOverride={override}
+        size={15}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        style={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      />}
       <button type="submit">Create Scholarship</button>
     </form>
   );

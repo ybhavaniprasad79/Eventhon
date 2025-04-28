@@ -1,4 +1,5 @@
 import { useState } from "react";
+import emailjs from "emailjs-com";
 import {
   FaInstagram,
   FaLinkedin,
@@ -12,99 +13,110 @@ import "./About.css";
 export default function Contact() {
   const [email, setEmail] = useState("");
 
+  // Function to send the email
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    const templateParams = {
+      email: email,
+      message: `User has entered this email: ${email}`, 
+    };
+
+    // Send email via EmailJS
+    emailjs
+      .send(
+        "service_1hyssl3",  // Your EmailJS service ID
+        "template_r590vqc",  // Your EmailJS template ID
+        templateParams,      // Template parameters (email and message)
+        "ZZjHuzZxGL3AwZON3"    // Your EmailJS public key
+      )
+      .then(
+        (result) => {
+          alert("Query sent successfully! We'll get in touch soon.");
+          setEmail(""); // Clear input field after submission
+        },
+        (error) => {
+          alert("Failed to send query. Please try again.");
+        }
+      );
+  };
+
   return (
     <div className="contact-container">
-      <div className="contact-section">
+      <section className="contact-section">
         <h2>📩 How to Contact Eventhon</h2>
         <p>
-          Find all details about our tech events, hackathons, and networking
-          opportunities on our official portal.
+          Explore all our tech events, hackathons, and networking opportunities on our official portal.
         </p>
         <p>
-          For any queries, reach out to us through our support system. Please
-          note that we do not provide telephone support.
+          For queries, reach out via our support system. Please note, we don’t offer telephone support.
         </p>
 
         <h3>🛠️ Support</h3>
+        <p>Click the ‘support’ button on our event pages for any assistance.</p>
         <p>
-          For any assistance regarding Eventhon, click the ‘support’ button on
-          our event pages.
+          Or, submit a request directly. Make sure to check our FAQ first.
         </p>
         <p>
-          Alternatively, submit a request directly. Please check our FAQ before
-          reaching out.
+          Follow our social channels to stay informed on latest events.
         </p>
-        <p>
-          Stay updated with our latest event announcements by following our
-          social media channels.
-        </p>
-        <p>If you have any concerns, check our support guidelines.</p>
+        <p>Questions? Review our support guidelines before reaching out.</p>
 
-        <h3>🤝 Want to Host an Event?</h3>
-        <p>
-          Partner with Eventhon to organize impactful hackathons and technical
-          events.
-        </p>
-        <p>
-          Fill out our partnership form and collaborate with us to create
-          amazing experiences.
-        </p>
+        <h3>🤝 Host an Event</h3>
+        <p>Partner with Eventhon to organize hackathons and tech events.</p>
+        <p>Fill out our form to start collaborating with us.</p>
 
         <h3>🏢 Corporate Engagement</h3>
         <p>
-          Upskill your workforce by hosting tech events with Eventhon. We help
-          companies engage with top talent in the industry.
+          Host skill-building events to engage with top tech talent in the industry.
         </p>
-        <p>Contact us today to explore opportunities with Eventhon.</p>
+        <p>Contact us to explore business opportunities with Eventhon.</p>
 
-        <h3>📣 Share Your Eventhon Experience</h3>
-        <p>
-          We would love to feature your story on our platform. Share your
-          experiences by filling out our success story form.
-        </p>
-        <p>
-          Follow us on X, LinkedIn, Telegram, and YouTube to stay updated.
-        </p>
-      </div>
+        <h3>📣 Share Your Story</h3>
+        <p>We'd love to showcase your Eventhon journey. Submit your story today!</p>
+        <p>Follow us on X, LinkedIn, Telegram, YouTube and more!</p>
+      </section>
 
-      <div className="brand-block">
+      <section className="brand-block">
         <h1>Eventhon</h1>
         <p>Bringing tech enthusiasts together, worldwide.</p>
-      </div>
+      </section>
 
-      <div className="contact-info">
+      <section className="contact-info">
         <h2>📬 Stay Connected</h2>
         <p>
           <strong>Event Inquiries:</strong> contact@eventhon.com
         </p>
-        <p>📞 +91-9311777388 (Mon to Fri, 9 AM to 6 PM)</p>
+        <p>📞 +91-9311777388 (Mon to Fri, 9 AM – 6 PM)</p>
         <p>
           <strong>Support:</strong> support@eventhon.com
         </p>
-      </div>
+      </section>
 
-      <div className="social-icons">
-        <FaInstagram />
-        <FaLinkedin />
-        <FaXTwitter />
-        <FaTelegram />
-        <FaDiscord />
-        <FaYoutube />
-      </div>
+      <section className="social-icons" aria-label="Social Media Links">
+        <FaInstagram title="Instagram" />
+        <FaLinkedin title="LinkedIn" />
+        <FaXTwitter title="X (Twitter)" />
+        <FaTelegram title="Telegram" />
+        <FaDiscord title="Discord" />
+        <FaYoutube title="YouTube" />
+      </section>
 
-      <div className="newsletter-section">
+      <section className="newsletter-section">
         <h2>📨 Stay Updated</h2>
-        <p>Subscribe for updates on upcoming tech events and hackathons.</p>
-        <div className="newsletter-input">
+        <p>Subscribe for updates on tech events and hackathons.</p>
+        <form className="newsletter-input" onSubmit={sendEmail}>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            aria-label="Enter your email"
+            required
           />
-          <button>➤</button>
-        </div>
-      </div>
+          <button type="submit">➤</button>
+        </form>
+      </section>
     </div>
   );
 }

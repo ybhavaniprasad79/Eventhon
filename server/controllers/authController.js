@@ -134,9 +134,55 @@ async function sendOTP(email, otp) {
   });
 
   await transporter.sendMail({
-    from: `AmedicK <${process.env.ADMIN_NAME}>`,
+    from: `Eventhon <${process.env.ADMIN_NAME}>`,
     to: email,
     subject: "Your OTP for Signup",
     text: `Your OTP is: ${otp}. It is valid for 10 minutes.`,
   });
 }
+
+
+
+// controllers/authController.js
+// controllers/authController.js
+export const googleAuthCallback = async (req, res) => {
+  try {
+    const { profile, user } = req.user;
+
+    const { displayName, emails } = profile;
+    if (!emails || emails.length === 0) {
+      return res.status(400).json({ message: 'Email is required for authentication' });
+    }
+
+    const email = emails[0].value;
+    const name = displayName;
+
+    // If for any reason the user isn’t saved yet (extra safety check)
+    let existingUser = await User.findOne({ email });
+    if (!existingUser) {
+      existingUser = new User({
+        name,
+        email,
+        password: null,
+        role: [ 'Organizer','user'],
+        isActivated: true,
+      });
+      await existingUser.save();
+    }
+
+    const token = generateToken(existingUser._id, existingUser.role, existingUser.name, existingUser.email);
+
+    res.cookie("accesstoken", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+    });
+
+    res.redirect(`http://localhost:5173/google-success?token=${token}`);
+
+  } catch (err) {
+    console.error("Google Auth Error:", err);
+    res.status(500).json({ message: "Failed to authenticate with Google", error: err.message });
+  }
+};
+

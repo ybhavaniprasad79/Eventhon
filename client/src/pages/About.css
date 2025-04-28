@@ -1,106 +1,118 @@
-/* Make it full-screen width */
 .contact-container {
-    width: 100%;
-    padding: 3rem 4vw;
-    background-color: #0f172a;
-    color: #e2e8f0;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* Content sections */
-  .contact-section,
-  .brand-block,
-  .contact-info,
-  .newsletter-section {
-    margin-bottom: 4rem;
-  }
-  
-  /* Headings */
-  h1 {
-    font-size: 3rem;
-    color: #00e6ff;
-    margin-top: 2rem;
-    text-align: center;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    color: #38bdf8;
-    margin-bottom: 1rem;
-  }
-  
-  h3 {
-    font-size: 1.4rem;
-    color: #7dd3fc;
-    margin-top: 2rem;
-  }
-  
-  p {
-    line-height: 1.7;
-    margin: 0.6rem 0;
-  }
-  
-  /* Brand text */
-  .brand-block {
-    text-align: center;
-  }
-  
-  /* Contact Info - remove box effect, full width */
-  .contact-info {
-    padding: 1rem 0;
-  }
-  
-  /* Social icons */
-  .social-icons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    font-size: 2rem;
-    margin: 2rem 0;
-    color: #00e6ff;
-  }
-  
-  .social-icons svg:hover {
-    color: #38bdf8;
-    cursor: pointer;
-  }
-  
-  /* Newsletter section full width */
-  .newsletter-section {
-    text-align: center;
-  }
-  
-  .newsletter-input {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  
-  .newsletter-input input {
-    padding: 0.8rem 1rem;
-    border-radius: 5px;
-    border: none;
-    width: 300px;
-    max-width: 90%;
-    background-color: #334155;
-    color: white;
-  }
-  
-  .newsletter-input button {
-    background-color: #00e6ff;
-    color: #000;
-    border: none;
-    padding: 0.8rem 1.2rem;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .newsletter-input button:hover {
-    background-color: #38bdf8;
-  }
-  
+  width: 100%;
+  padding: 4rem 6vw;
+  background: linear-gradient(to right, #fdf0f3, #f0e9ff);
+  color: #2e2e2e;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* Sections */
+.contact-section,
+.brand-block,
+.contact-info,
+.newsletter-section {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+/* Headings */
+h1 {
+  font-size: 3rem;
+  color: #6d28d9;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+  color: #7c3aed;
+  margin-bottom: 0.8rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #a855f7;
+  margin: 2rem 0 1rem;
+}
+
+p {
+  line-height: 1.8;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #3b3b3b;
+}
+
+/* Brand block */
+.brand-block p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Contact Info */
+.contact-info p {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.8rem;
+  flex-wrap: wrap;
+  font-size: 2.2rem;
+  color: #a855f7;
+}
+
+.social-icons svg:hover {
+  color: #7c3aed;
+  transform: scale(1.1);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* Newsletter */
+.newsletter-section {
+  text-align: center;
+}
+
+.newsletter-input {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.newsletter-input input {
+  padding: 0.9rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  width: 320px;
+  background-color: #f3e8ff;
+  color: #4b0082;
+  font-size: 1rem;
+}
+
+.newsletter-input input::placeholder {
+  color: #7e22ce;
+}
+
+.newsletter-input button {
+  background-color: #7c3aed;
+  color: #fff;
+  border: none;
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.newsletter-input button:hover {
+  background-color: #6d28d9;
+}

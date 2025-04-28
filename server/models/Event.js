@@ -41,13 +41,25 @@ const eventSchema = new mongoose.Schema(
       type: String,
       enum: ['Free', 'Paid'],
       required: true
-    }
-    
+    },
+    evaluationMarkers: [
+      {
+        name: {
+          type: String,
+          required: true
+        },
+        weight: {
+          type: Number, // percentage or points, your call
+          required: false
+        }
+      }
+    ]
   },
   {
     timestamps: true
   }
 );
+
 
 
 const ScholarshipSchema = new mongoose.Schema(

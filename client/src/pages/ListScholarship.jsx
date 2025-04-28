@@ -83,11 +83,11 @@ const ListScholarship = () => {
       ) : (
         events.map((event) => (
           <div key={event._id} className="event-list-card">
-            <h3 className="event-card-title">{event.title}</h3>
-            <p className="event-card-degrees">{event.degrees}</p>
-            <p className="event-card-courses">{event.courses}</p>
-            <p className="event-card-nationalities">{event.nationalities}</p>
-            <p className="event-card-funding">{event.funding}</p>
+            <h3 className="event-card-title"><span style={{fontWeight: "bold"}}>Title: </span> {event.title}</h3>
+            <p className="event-card-degrees"><span style={{fontWeight: "bold"}}>Degrees: </span> {event.degrees}</p>
+            <p className="event-card-courses"><span style={{fontWeight: "bold"}}>Courses: </span> {event.courses}</p>
+            <p className="event-card-nationalities"><span style={{fontWeight: "bold"}}>Nationalities: </span> {event.nationalities}</p>
+            <p className="event-card-funding"><span style={{fontWeight: "bold"}}>Funding: </span> {event.funding}</p>
             <p className="event-card-deadline">📅 deadline: {new Date(event.deadline).toLocaleDateString()}</p>
             {userRole && userRole.includes('admin') ? (
                 <button className="event-card-button2" onClick={() => handleDelete(event._id)}>Delete</button>

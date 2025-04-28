@@ -3,6 +3,7 @@ import axios from 'axios';
 import './RegisteredEvents.css';
 import { FaSearch, FaFilter, FaMoneyBillWave, FaTags } from 'react-icons/fa';
 import { debounce } from 'lodash';
+import { PulseLoader } from 'react-spinners';
 
 const RegisteredEvents = () => {
   const [registeredEvents, setRegisteredEvents] = useState([]);
@@ -10,32 +11,36 @@ const RegisteredEvents = () => {
   const [rawSearch, setRawSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [paymentType, setPaymentType] = useState('All');
+  const [load,setLoad] = useState(false);
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     const handler = debounce(() => {
       setSearch(rawSearch);
     }, 300);
-
     handler();
     return () => handler.cancel();
   }, [rawSearch]);
 
   const fetchRegisteredEvents = async () => {
     const token = localStorage.getItem('token');
+    if (!token) return;
     const userId = JSON.parse(atob(token.split('.')[1])).id;
-
+    setLoading(true);
     try {
       const res = await axios.get(`http://localhost:5000/api/events/registered/${userId}`);
       setRegisteredEvents(res.data);
     } catch (err) {
       console.error('Error fetching registered events:', err);
+    } finally {
+      setLoading(false)
     }
   };
 
   const handleCancelRegistration = async (eventId) => {
     const token = localStorage.getItem('token');
     const userId = JSON.parse(atob(token.split('.')[1])).id;
-
+    setLoad(true);
     try {
       await axios.put(`http://localhost:5000/api/events/cancel-registration/${eventId}`, {
         userId,
@@ -44,13 +49,15 @@ const RegisteredEvents = () => {
       setRegisteredEvents(prev => prev.filter(event => event._id !== eventId));
     } catch (err) {
       console.error('Error cancelling registration:', err);
+    } finally {
+      setLoad(false)
     }
   };
 
   const filtered = registeredEvents.filter(event => {
     return (
-      (category === 'All' || event.category && event.category.toLowerCase() === category.toLowerCase()) &&
-      (paymentType === 'All' || event.paymentType && event.paymentType.toLowerCase() === paymentType.toLowerCase()) &&
+      (category === 'All' || event.category?.toLowerCase() === category.toLowerCase()) &&
+      (paymentType === 'All' || event.paymentType?.toLowerCase() === paymentType.toLowerCase()) &&
       event.title.toLowerCase().includes(search.toLowerCase())
     );
   });
@@ -61,7 +68,17 @@ const RegisteredEvents = () => {
 
   return (
     <div className="registered-events-container">
-      <h2 className="registered-events-title">🎟️ My Registered Events</h2>
+      {loading && <PulseLoader
+        color="chocolate"
+        loading={loading}
+        // cssOverride={override}
+        size={15}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+        style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}
+      />}
+
+      <h2 className="registered-events-title">My Registered Events</h2>
 
       <div className="filters">
         <div className="search-container">
@@ -76,11 +93,11 @@ const RegisteredEvents = () => {
         </div>
 
         <div className="category-buttons">
-          <FaTags />
+          <FaTags className="filter-icon" />
           {['All', 'Technical', 'Non-Technical'].map((cat) => (
             <button
               key={cat}
-              className={category === cat ? 'active' : ''}
+              className={`filter-btn ${category === cat ? 'active' : ''}`}
               onClick={() => setCategory(cat)}
             >
               {cat}
@@ -89,11 +106,11 @@ const RegisteredEvents = () => {
         </div>
 
         <div className="payment-buttons">
-          <FaMoneyBillWave />
+          <FaMoneyBillWave className="filter-icon" />
           {['All', 'Free', 'Paid'].map((type) => (
             <button
               key={type}
-              className={paymentType === type ? 'active' : ''}
+              className={`filter-btn ${paymentType === type ? 'active' : ''}`}
               onClick={() => setPaymentType(type)}
             >
               {type}
@@ -111,15 +128,40 @@ const RegisteredEvents = () => {
           <div key={event._id} className="event-card">
             <h3 className="event-title">{event.title}</h3>
             <p className="event-description">{event.description}</p>
-            <p className="event-organizer">Organized by: {event.organizer?.name || "N/A"}</p>
-            <p className="event-date">Date: {new Date(event.date).toLocaleDateString()}</p>
-            <p className="event-location">Location: {event.location}</p>
-            <p className="event-category">Category: {event.category}</p>
-            <p className="event-payment">Payment Type: {event.paymentType}</p>
-
+            <div className="event-details">
+              <div className="event-detail-item">
+                <span className="detail-label">Organizer</span>
+                <span className="detail-value">{event.organizer?.name || 'N/A'}</span>
+              </div>
+              <div className="event-detail-item">
+                <span className="detail-label">Date</span>
+                <span className="detail-value">{new Date(event.date).toLocaleDateString()}</span>
+              </div>
+              <div className="event-detail-item">
+                <span className="detail-label">Location</span>
+                <span className="detail-value">{event.location}</span>
+              </div>
+              <div className="event-detail-item">
+                <span className="detail-label">Category</span>
+                <span className="detail-value">{event.category}</span>
+              </div>
+              <div className="event-detail-item">
+                <span className="detail-label">Payment Type</span>
+                <span className="detail-value">{event.paymentType}</span>
+              </div>
+            </div>
+            {load && <PulseLoader
+              color="chocolate"
+              loading={load}
+              // cssOverride={override}
+              size={15}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+              style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "10px" }}
+            />}
             <button
               onClick={() => handleCancelRegistration(event._id)}
-              className="cancel-registration-button"
+              className="cancel-button"
             >
               Cancel Registration
             </button>

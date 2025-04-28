@@ -1,183 +1,272 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './EventList.css';
-import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-const EventList = () => {
-  const [events, setEvents] = useState([]);
-  const [userRole, setUserRole] = useState('');
-  const [change, setChange] = useState(true);
-  const [filteredEvents, setFilteredEvents] = useState([]);
+const MyEvents = () => {
+  const [myEvents, setMyEvents] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
   const [paymentType, setPaymentType] = useState('All');
+  const [participantSearch, setParticipantSearch] = useState({});
+
   const navigate = useNavigate();
 
-  const today = new Date();
+  const fetchMyEvents = async () => {
+    const token = localStorage.getItem('token');
+    const organizerId = JSON.parse(atob(token.split('.')[1])).id;
 
-  useEffect(() => {
-    const token = localStorage.getItem('token'); 
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUserRole(decoded.role); // Ensure 'role' is part of JWT
-      } catch (err) {
-        console.error("Invalid token");
-      }
-    }
-
-    fetchEvents();
-  }, [change]);
-
-  const fetchEvents = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/events/event', {
+      const res = await axios.get(`http://localhost:5000/api/events/organizer_events/${organizerId}`, {
         withCredentials: true
       });
-      setEvents(res.data);
+      setMyEvents(res.data);
     } catch (err) {
       console.error('Error fetching events:', err);
     }
   };
 
-  const handleRegister = async (eventId) => {
+  const handleDeleteEvent = async (eventId) => {
     const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/signup');;
-      return;
-    }
-
-    let userId;
-    try {
-      const decoded = jwtDecode(token);
-      userId = decoded.id;
-    } catch (err) {
-      alert('Invalid token');
-      return;
-    }
+    const organizerId = JSON.parse(atob(token.split('.')[1])).id;
 
     try {
-      await axios.post(`http://localhost:5000/api/events/register_event/${eventId}`, { userId }, {
+      await axios.delete(`http://localhost:5000/api/events/delete/${eventId}`, {
+        data: { organizerId },
         withCredentials: true
       });
-      // alert('Registered successfully!');
-      navigate('/registered-events');
+      setMyEvents(prev => prev.filter(event => event._id !== eventId));
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to register');
+      console.error('Error deleting event:', err);
     }
   };
 
-  const handleDelete = async (eventId) => {
+  const handleUpdateEvent = (eventId) => {
+    navigate(`/update-event/${eventId}`);
+  };
+
+  const handleRemoveParticipant = async (eventId, userId) => {
+    const token = localStorage.getItem('token');
+    const organizerId = JSON.parse(atob(token.split('.')[1])).id;
+
     try {
-      await axios.delete(`http://localhost:5000/api/events/eve/${eventId}`, {
+      await axios.put(`http://localhost:5000/api/events/cancel-registration/${eventId}`, {
+        userId,
+        organizerId
+      }, {
         withCredentials: true
       });
-      // alert('Deleted successfully!');
-      // Optimistic UI update
-      setEvents(prev => prev.filter(e => e._id !== eventId));
+
+      setMyEvents(prevEvents =>
+        prevEvents.map(event =>
+          event._id === eventId
+            ? { ...event, participants: event.participants.filter(p => p._id !== userId) }
+            : event
+        )
+      );
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete');
+      console.error('Error removing participant:', err);
     }
   };
 
+  const filtered = myEvents.filter(event => {
+    return (
+      (category === 'All' || (event.category && event.category.toLowerCase() === category.toLowerCase())) &&
+      (paymentType === 'All' || (event.paymentType && event.paymentType.toLowerCase() === paymentType.toLowerCase())) &&
+      event.title.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   useEffect(() => {
-    let filtered = events;
-
-    if (category !== 'All') {
-      filtered = filtered.filter((event) => 
-        event.category && event.category.toLowerCase() === category.toLowerCase());
-    }
-
-    if (paymentType !== 'All') {
-      filtered = filtered.filter((event) =>
-        event.paymentType && event.paymentType.toLowerCase() === paymentType.toLowerCase()
-      );
-    }
-    
-
-    if (search.trim() !== '') {
-      filtered = filtered.filter((event) =>
-        event.title.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    setFilteredEvents(filtered);
-  }, [search, category, paymentType, events]);
-
-  const upcomingEvents = filteredEvents.filter(event => new Date(event.date) >= today);
-  const completedEvents = filteredEvents.filter(event => new Date(event.date) < today);
-
+    fetchMyEvents();
+  }, []);
 
   return (
-    <div className="event-list-container">
-      <h2 className="event-list-title">Available Events</h2>
+    <div style={{ padding: '30px', fontFamily: 'Segoe UI, sans-serif', backgroundColor: '#f5f8ff' }}>
+      <h2 style={{ textAlign: 'center', marginBottom: '25px', color: '#333' }}>My Hosted Events</h2>
 
-      <div className="filters">
+      {/* Filters */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '20px', justifyContent: 'center' }}>
         <input
           type="text"
           placeholder="Search events..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="search-bar"
+          style={{
+            padding: '10px',
+            minWidth: '200px',
+            border: '1px solid #ccc',
+            borderRadius: '8px'
+          }}
         />
-        <div className="category-buttons">
-          {/* <button onClick={() => setCategory('All')}>All</button> */}
-          <button onClick={() => setCategory('Technical')}>Technical</button>
-          <button onClick={() => setCategory('Non-Technical')}>Non-Technical</button>
-        </div>
-
-        <div className="payment-buttons">
-          <button onClick={() => {setPaymentType('All'),setCategory('All')}}>All</button>
-          <button onClick={() => setPaymentType('Free')}>Free</button>
-          <button onClick={() => setPaymentType('Paid')}>Paid</button>
-        </div>
+        {['All', 'Technical', 'Non-Technical'].map(cat => (
+          <button
+            key={cat}
+            onClick={() => setCategory(cat)}
+            style={{
+              padding: '10px',
+              backgroundColor: category === cat ? '#4c8ef7' : '#e1e8f0',
+              color: category === cat ? '#fff' : '#333',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+        {['All', 'Free', 'Paid'].map(type => (
+          <button
+            key={type}
+            onClick={() => {
+              setPaymentType(type);
+              if (type === 'All') setCategory('All');
+            }}
+            style={{
+              padding: '10px',
+              backgroundColor: paymentType === type ? '#28a745' : '#e1e8f0',
+              color: paymentType === type ? '#fff' : '#333',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer'
+            }}
+          >
+            {type}
+          </button>
+        ))}
       </div>
 
-      <h3>Upcoming Events</h3>
-      {upcomingEvents.length === 0 ? (
-        <p className="event-list-empty">No upcoming events found.</p>
+      {/* Event Cards */}
+      {filtered.length === 0 ? (
+        <p style={{ textAlign: 'center', color: '#888' }}>You haven't hosted any events yet.</p>
       ) : (
-        upcomingEvents.map((event) => (
-          <div key={event._id} className="event-list-card">
-            <h3 className="event-card-title">{event.title}</h3>
-            <p className="event-card-description">{event.description}</p>
-            <p className="event-card-detail">📅 Date: {new Date(event.date).toLocaleDateString()}</p>
-            <p className="event-card-detail">📍 Location: {event.location}</p>
-            <p className="event-card-detail">👥 Max Participants: {event.maxParticipants}</p>
-            <p className="event-card-detail">🧩 Category: {event.category}</p>
-            <p className="event-card-detail">💰 Payment: {event.paymentType}</p>
-            {
-              userRole.includes('admin') ? (
-                <button className="event-card-button2" onClick={() => handleDelete(event._id)}>Delete</button>
-              ) : (
-                <button className="event-card-button" onClick={() => handleRegister(event._id)}>Register</button>
-              )
-            }
-          </div>
-        ))
-      )}
+        <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
+          {filtered.map(event => (
+            <div
+              key={event._id}
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: '10px',
+                padding: '20px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.08)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              <div>
+                <h3 style={{ color: '#222' }}>{event.title}</h3>
+                <p style={{ marginBottom: '10px', color: '#555' }}>{event.description}</p>
+                <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+                  <span style={{
+                    backgroundColor: '#dfefff',
+                    color: '#2c6ed5',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    fontSize: '12px'
+                  }}>
+                    {event.category}
+                  </span>
+                  <span style={{
+                    backgroundColor: event.paymentType === 'Free' ? '#dbf7e0' : '#ffe2e2',
+                    color: event.paymentType === 'Free' ? '#218838' : '#dc3545',
+                    padding: '4px 10px',
+                    borderRadius: '20px',
+                    fontSize: '12px'
+                  }}>
+                    {event.paymentType}
+                  </span>
+                </div>
 
-      <h3>Completed Events</h3>
-      {completedEvents.length === 0 ? (
-        <p className="event-list-empty">No completed events.</p>
-      ) : (
-        completedEvents.map((event) => (
-          <div key={event._id} className="event-list-card completed-event">
-            <h3 className="event-card-title">{event.title}</h3>
-            <p className="event-card-description">{event.description}</p>
-            <p className="event-card-detail">📅 Date: {new Date(event.date).toLocaleDateString()}</p>
-            <p className="event-card-detail">📍 Location: {event.location}</p>
-            <p className="event-card-detail">👥 Max Participants: {event.maxParticipants}</p>
-            <p className="event-card-detail">🧩 Category: {event.category}</p>
-            <p className="event-card-detail">💰 Payment: {event.paymentType}</p>
-            <p className="completed-label">✔ Completed</p>
-          </div>
-        ))
+                <details>
+                  <summary style={{ cursor: 'pointer', color: '#007bff', marginBottom: '5px' }}>
+                    {event.participants.length} Participant{event.participants.length !== 1 && 's'}
+                  </summary>
+                  <input
+                    type="text"
+                    placeholder="Search participant..."
+                    style={{
+                      padding: '6px',
+                      marginTop: '10px',
+                      marginBottom: '10px',
+                      width: '100%',
+                      border: '1px solid #ccc',
+                      borderRadius: '6px'
+                    }}
+                    value={participantSearch[event._id] || ''}
+                    onChange={(e) =>
+                      setParticipantSearch(prev => ({
+                        ...prev,
+                        [event._id]: e.target.value
+                      }))
+                    }
+                  />
+                  {event.participants.length === 0 ? (
+                    <p style={{ color: '#888', fontSize: '14px' }}>No one registered yet.</p>
+                  ) : (
+                    <ul style={{ listStyle: 'none', padding: 0, marginTop: '10px' }}>
+                      {event.participants
+                        .filter(user =>
+                          user.name.toLowerCase().includes((participantSearch[event._id] || '').toLowerCase())
+                        )
+                        .map(user => (
+                          <li key={user._id} style={{ marginBottom: '8px' }}>
+                            <span style={{ fontWeight: '500' }}>{user.name}</span> – <a href={`mailto:${user.email}`}>{user.email}</a>
+                            <button
+                              onClick={() => handleRemoveParticipant(event._id, user._id)}
+                              style={{
+                                marginLeft: '8px',
+                                padding: '4px 8px',
+                                backgroundColor: '#dc3545',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '4px',
+                                cursor: 'pointer',
+                                fontSize: '12px'
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </details>
+              </div>
+
+              <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                <button
+                  onClick={() => handleUpdateEvent(event._id)}
+                  style={{
+                    backgroundColor: '#ffc107',
+                    color: '#000',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '8px 12px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Update
+                </button>
+                <button
+                  onClick={() => handleDeleteEvent(event._id)}
+                  style={{
+                    backgroundColor: '#dc3545',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '8px 12px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 };
 
-export default EventList;
+export default MyEvents;
