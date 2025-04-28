@@ -143,8 +143,6 @@ async function sendOTP(email, otp) {
 
 
 
-// controllers/authController.js
-// controllers/authController.js
 export const googleAuthCallback = async (req, res) => {
   try {
     const { profile, user } = req.user;

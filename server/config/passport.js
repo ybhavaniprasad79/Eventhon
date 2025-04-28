@@ -15,7 +15,7 @@ passport.use(new GoogleStrategy({
     if (!profile.emails || profile.emails.length === 0) {
       return done(new Error('No email found in Google profile'));
     }
-
+    console.log("accesstoken:",accessToken)
     const email = profile.emails[0].value;
     const name = profile.displayName;
 
