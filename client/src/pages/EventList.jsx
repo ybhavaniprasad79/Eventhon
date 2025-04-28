@@ -31,7 +31,9 @@ const MyEvents = () => {
 
     try {
       await axios.delete(`https://eventhon.onrender.com/api/events/delete/${eventId}`, {
-        data: { organizerId },
+        data: { organizerId }
+        
+      },{
         withCredentials: true
       });
       setMyEvents(prev => prev.filter(event => event._id !== eventId));
