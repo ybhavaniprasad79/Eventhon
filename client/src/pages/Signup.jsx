@@ -37,7 +37,9 @@ export default function Signup() {
             );
 
             setMessage("Signup successful! Redirecting to OTP...");
-            setTimeout(() => navigate("/otp-verfy"), 2000);
+            setTimeout(() => {
+                navigate('/otpverify', { state: { email } }); // Pass the email via state
+              }, 2000);
         } catch (error) {
             if (error.response?.status === 409) {
                 setMessage("User already exists. Redirecting to login...");

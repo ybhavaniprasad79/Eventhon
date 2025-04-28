@@ -49,8 +49,22 @@ export const registerUser = async (req, res) => {
     }
 
     // Save user in DB
-    await user.save();
+      await user.save();
 
+      // After saving, set a timeout to delete if not activated
+      setTimeout(async () => {
+        try {
+          const existingUser = await User.findOne({ email });
+          if (existingUser && !existingUser.isActivated) {
+            await User.deleteOne({ email });
+            otpStore.delete(email); // <--- ADD THIS
+            console.log(`Deleted unverified user and OTP: ${email}`);
+          }
+        } catch (err) {
+          console.error(`Error deleting unverified user ${email}:`, err.message);
+        }
+      }, 10 * 60 * 1000);  //<--- 10Minutes
+      
     
     
     return res.status(200).json({ success: true, message: 'OTP sent to your email' });
@@ -92,35 +106,48 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const optverfy=async (req, res) => {
-    const { email, otp } = req.body;
+export const otpverify = async (req, res) => {
+  const { otp } = req.body;
 
-    if (!email || !otp) { 
-      return res.status(404).json({ message: 'All fields are required' });
-    }
-    
-    const storedData = otpStore.get(email);
-    
-    if (!storedData) {
-      return res.status(404).json({ message: 'OTP expired or not requested' });
-    }
+  if (!otp) {
+    return res.status(404).json({ message: 'OTP is required' });
+  }
 
-    if (Date.now() > storedData.expiresAt) {
-      otpStore.delete(email);
-      return res.status(404).json({ message: 'OTP has expired' });
-    }
+  // Assuming the email is available on the session, local storage, or any other temporary storage.
+  // This example assumes that email is being passed from the front-end with the OTP.
+  const { email } = req.body;
 
-    if (storedData.otp !== otp) {
-      return res.status(404).json({ message: 'Invalid OTP' });
-    }
+  if (!email) {
+    return res.status(404).json({ message: 'Email is required' });
+  }
 
+  const storedData = otpStore.get(email);
+
+  if (!storedData) {
+    return res.status(404).json({ message: 'OTP expired or not requested' });
+  }
+
+  if (Date.now() > storedData.expiresAt) {
     otpStore.delete(email);
-    const user = await User.findOne({ email });
+    return res.status(404).json({ message: 'OTP has expired' });
+  }
 
-    await User.findByIdAndUpdate(user._id, { isActivated: true })
+  if (storedData.otp !== otp) {
+    return res.status(404).json({ message: 'Invalid OTP' });
+  }
 
-    res.status(200).json({ success: true, message: "Signup successful" });
-  };
+  otpStore.delete(email);
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    return res.status(404).json({ message: 'Please start signup from beggining' });
+  }
+
+  await User.findByIdAndUpdate(user._id, { isActivated: true });
+
+  res.status(200).json({ success: true, message: "Signup successful" });
+};
+
 
 
 

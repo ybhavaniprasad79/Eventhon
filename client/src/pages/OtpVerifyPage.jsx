@@ -1,19 +1,35 @@
 import { useState } from 'react';
 import axios from 'axios';
 import './OtpVerifyPage.css'; // import the CSS file
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const OtpVerifyPage = () => {
-  const [email, setEmail] = useState('');
+  // const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const { email } = location.state || {};
+
+  useEffect(() => {
+    if (!email) {
+      setMessage('No email found. Please go back to the signup page.');
+    }
+  }, [email]);
 
   const handleVerify = async (e) => {
     e.preventDefault();
     setMessage('');
     setLoading(true);
+
+
+    if (!email) {
+      setMessage('Email is missing');
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post('https://eventhon.onrender.com/api/auth/opt-verfy', { email, otp }, { withCredentials: true });
@@ -30,13 +46,13 @@ const OtpVerifyPage = () => {
     <div className="otp-container">
       <form className="otp-form" onSubmit={handleVerify}>
         <h2>OTP Verification</h2>
-        <input
+        {/* <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-        />
+        /> */}
         <input
           type="text"
           placeholder="Enter OTP"
