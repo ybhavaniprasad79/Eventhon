@@ -95,7 +95,7 @@ export const loginUser = async (req, res) => {
 export const optverfy=async (req, res) => {
     const { email, otp } = req.body;
 
-    if (!email || !otp) {
+    if (!email || !otp) { 
       return res.status(404).json({ message: 'All fields are required' });
     }
     
