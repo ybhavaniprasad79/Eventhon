@@ -83,7 +83,7 @@ export const loginUser = async (req, res) => {
     res.cookie('accesstoken', token, {
       httpOnly: true,
       secure: true,             // <--- Important: true because Netlify is HTTPS
-      sameSite: 'None',          // <--- Important: allow cross-site cookies
+      sameSite: 'None',          // <-- Important: allow cross-site cookies
       maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
     res.status(200).json({ user: { name: user.name, email: user.email, role: user.role }, token });
