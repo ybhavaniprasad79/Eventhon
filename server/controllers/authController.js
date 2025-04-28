@@ -172,8 +172,8 @@ export const googleAuthCallback = async (req, res) => {
 
     res.cookie('accesstoken', token, {
       httpOnly: true,
-      secure: true,             // <--- Important: true because Netlify is HTTPS
-      sameSite: 'None',          // <--- Important: allow cross-site cookies
+      secure: true,             //  true because Netlify is HTTPS
+      sameSite: 'None',          //  allow cross-site cookies
       maxAge: 24 * 60 * 60 * 1000, // 1 day
   });
     res.redirect(`https://eventhon.netlify.app/google-success?token=${token}`);
