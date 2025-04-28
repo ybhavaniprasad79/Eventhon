@@ -18,7 +18,7 @@ export default function Competition() {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:5000/api/events/event', {
+      const res = await axios.get('https://eventhon.onrender.com/api/events/event', {
         withCredentials: true
       });
       setEvents(res.data);

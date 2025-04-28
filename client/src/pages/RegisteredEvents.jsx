@@ -28,7 +28,7 @@ const RegisteredEvents = () => {
     const userId = JSON.parse(atob(token.split('.')[1])).id;
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/events/registered/${userId}`);
+      const res = await axios.get(`https://eventhon.onrender.com/api/events/registered/${userId}`);
       setRegisteredEvents(res.data);
     } catch (err) {
       console.error('Error fetching registered events:', err);
@@ -42,7 +42,7 @@ const RegisteredEvents = () => {
     const userId = JSON.parse(atob(token.split('.')[1])).id;
     setLoad(true);
     try {
-      await axios.put(`http://localhost:5000/api/events/cancel-registration/${eventId}`, {
+      await axios.put(`https://eventhon.onrender.com/api/events/cancel-registration/${eventId}`, {
         userId,
       });
 

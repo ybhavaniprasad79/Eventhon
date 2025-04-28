@@ -31,7 +31,7 @@ export default function Signup() {
 
         try {
             const res = await axios.post(
-                "http://localhost:5000/api/auth/register",
+                "https://eventhon.onrender.com/api/auth/register",
                 formData,
                 { withCredentials: true } // if backend uses cookies/sessions
             );

@@ -10,7 +10,7 @@ const MyScholarship = () => {
     const organizerId = JSON.parse(atob(token.split('.')[1])).id;
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/events/organizer_Scholarship/${organizerId}`, {
+      const res = await axios.get(`https://eventhon.onrender.com/api/events/organizer_Scholarship/${organizerId}`, {
         withCredentials: true
       });
       setMyEvents(res.data);

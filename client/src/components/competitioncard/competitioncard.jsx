@@ -37,7 +37,7 @@ export const CompetitionCard = ({ event,Role}) => {
     }
     setLoad(true);
     try {
-      await axios.post(`http://localhost:5000/api/events/register_event/${eventId}`, { userId }, {
+      await axios.post(`https://eventhon.onrender.com/api/events/register_event/${eventId}`, { userId }, {
         withCredentials: true
       });
       navigate('/registered-events');
@@ -50,7 +50,7 @@ export const CompetitionCard = ({ event,Role}) => {
 
   const handleDelete = async (eventId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/events/eve/${eventId}`, {
+      await axios.delete(`https://eventhon.onrender.com/api/events/eve/${eventId}`, {
         withCredentials: true
       });
       alert('Deleted successfully!');

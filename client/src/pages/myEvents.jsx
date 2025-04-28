@@ -19,7 +19,7 @@ const MyEvents = () => {
     const organizerId = JSON.parse(atob(token.split('.')[1])).id;
     setLoad(true)
     try {
-      const res = await axios.get(`http://localhost:5000/api/events/organizer_events/${organizerId}`, {
+      const res = await axios.get(`https://eventhon.onrender.com/api/events/organizer_events/${organizerId}`, {
         withCredentials: true
       });
       setMyEvents(res.data);
@@ -35,7 +35,7 @@ const MyEvents = () => {
     const organizerId = JSON.parse(atob(token.split('.')[1])).id;
     setLoading(true)
     try {
-      await axios.delete(`http://localhost:5000/api/events/delete/${eventId}`, {
+      await axios.delete(`https://eventhon.onrender.com/api/events/delete/${eventId}`, {
         data: { organizerId },
         withCredentials: true
       });
@@ -58,7 +58,7 @@ const MyEvents = () => {
     const reason = prompt("Please enter a reason for removing this participant:");
     if (!reason) return alert("Removal reason is required!");
     try {
-      await axios.put(`http://localhost:5000/api/events/cancel-registration/${eventId}`, {
+      await axios.put(`https://eventhon.onrender.com/api/events/cancel-registration/${eventId}`, {
         userId,
         organizerId,
         reason

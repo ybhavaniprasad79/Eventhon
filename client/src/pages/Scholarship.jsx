@@ -20,7 +20,7 @@ const HostScholarship = () => {
     const organizerId = JSON.parse(atob(token.split('.')[1])).id;
     setLoad(true)
     try {
-      await axios.post('http://localhost:5000/api/events/createScholarship', {
+      await axios.post('https://eventhon.onrender.com/api/events/createScholarship', {
         title,
         degrees,
         courses,

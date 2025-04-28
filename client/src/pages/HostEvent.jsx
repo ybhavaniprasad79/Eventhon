@@ -20,7 +20,7 @@ const HostEvent = () => {
 
   useEffect(() => {
     if (eventId) {
-      axios.get(`http://localhost:5000/api/events/${eventId}`, {
+      axios.get(`https://eventhon.onrender.com/api/events/${eventId}`, {
         withCredentials: true
       })
         .then((res) => {
@@ -87,11 +87,11 @@ const HostEvent = () => {
     setLoad(true);
     try {
       if (eventId) {
-        await axios.put(`http://localhost:5000/api/events/update/${eventId}`, eventData, {
+        await axios.put(`https://eventhon.onrender.com/api/events/update/${eventId}`, eventData, {
           withCredentials: true
         });
       } else {
-        await axios.post('http://localhost:5000/api/events/create', eventData, {
+        await axios.post('https://eventhon.onrender.com/api/events/create', eventData, {
           withCredentials: true
         });
       }

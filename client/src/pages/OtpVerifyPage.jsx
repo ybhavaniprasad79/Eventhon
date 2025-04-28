@@ -16,7 +16,7 @@ const OtpVerifyPage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/opt-verfy', { email, otp }, { withCredentials: true });
+      const response = await axios.post('https://eventhon.onrender.com/api/auth/opt-verfy', { email, otp }, { withCredentials: true });
       setMessage(response.data.message);
       navigate('/login');
     } catch (error) {

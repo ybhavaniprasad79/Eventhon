@@ -26,7 +26,7 @@ const ListScholarship = () => {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/events/Scholarship', {
+      const res = await axios.get('https://eventhon.onrender.com/api/events/Scholarship', {
         withCredentials: true
       });
       setEvents(res.data);
@@ -52,7 +52,7 @@ const ListScholarship = () => {
         }
 
     try {
-      await axios.post(`http://localhost:5000/api/events/register_Scholarship/${ScholarshipId}`, { userId }, {
+      await axios.post(`https://eventhon.onrender.com/api/events/register_Scholarship/${ScholarshipId}`, { userId }, {
         withCredentials: true
       });
       // alert('Registered successfully!');
@@ -65,7 +65,7 @@ const ListScholarship = () => {
   const handleDelete = async (ScholarshipId) => {
     try {
       // console.log(ScholarshipId)
-      await axios.delete(`http://localhost:5000/api/events/Sch/${ScholarshipId}`,{
+      await axios.delete(`https://eventhon.onrender.com/api/events/Sch/${ScholarshipId}`,{
         withCredentials: true
       });
       // alert('Delete successfully!');
