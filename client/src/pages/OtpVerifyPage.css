@@ -1,55 +1,61 @@
+/* Center the whole page */
 .otp-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #f5f5f5;
-  }
-  
-  .otp-form {
-    background-color: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .otp-form h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-  }
-  
-  .otp-form input {
-    display: block;
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-  }
-  
-  .otp-form button {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .otp-form button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-  }
-  
-  .message {
-    text-align: center;
-    margin-top: 1rem;
-    color: #d9534f;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.otp-form {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.otp-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+}
+
+/* The box containing the 6 inputs */
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* Style each OTP input */
+.otp-inputs input {
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s;
+}
+
+/* Highlight on focus */
+.otp-inputs input:focus {
+  outline: none;
+  border-color: #4CAF50;
+}
+
+/* Message styling */
+.message {
+  margin-top: 15px;
+  color: #e74c3c;
+  font-size: 16px;
+}
+
+/* Optional loading text */
+.otp-form p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #555;
+}

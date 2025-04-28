@@ -38,7 +38,7 @@ export const registerUser = async (req, res) => {
     otpStore.set(email, {
       otp,
       name,
-      expiresAt: Date.now() + 10 * 60 * 1000,
+      expiresAt: Date.now() + 3 * 60 * 1000,
     });
 
     // Send OTP to email
@@ -63,7 +63,7 @@ export const registerUser = async (req, res) => {
         } catch (err) {
           console.error(`Error deleting unverified user ${email}:`, err.message);
         }
-      }, 10 * 60 * 1000);  //<--- 10Minutes
+      }, 3 * 60 * 1000);  //<--- 3Minutes
       
     
     
@@ -163,8 +163,8 @@ async function sendOTP(email, otp) {
   await transporter.sendMail({
     from: `Eventhon <${process.env.ADMIN_NAME}>`,
     to: email,
-    subject: "Your OTP for Signup",
-    text: `Your OTP is: ${otp}. It is valid for 10 minutes.`,
+    subject: "Your OTP for Signup in Eventhon",
+    text: `Your OTP is: ${otp}. It is valid for 3 minutes.`,
   });
 }
 

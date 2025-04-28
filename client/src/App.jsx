@@ -28,7 +28,7 @@ function App() {
         <Route path="/host-Scholarship" element={<><Navbar/><HostScholarship /></>} />
         <Route path="/Scholarship" element={<><Navbar/><ListScholarship /></>} />
         <Route path="/Contact" element={<><Navbar/><Contact /></>} />
-        <Route path="/otp-verfy" element={<><Navbar/><OtpVerifyPage /></>} />
+        <Route path="/otp-verfy" element={<OtpVerifyPage />} />
         <Route path="/my-Scholarship" element={<><Navbar/><MyScholarship /></>} />
         <Route path="/registered-events" element={<><Navbar/><RegisteredEvents /></>} />
         <Route path="/update-event/:eventId" element={<><Navbar/><HostEvent /></>} /> 

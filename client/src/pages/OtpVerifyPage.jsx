@@ -1,11 +1,10 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import './OtpVerifyPage.css'; // import the CSS file
-import { useNavigate,useLocation } from 'react-router-dom';
+import './OtpVerifyPage.css';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const OtpVerifyPage = () => {
-  // const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState(Array(6).fill(''));
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,20 +18,37 @@ const OtpVerifyPage = () => {
     }
   }, [email]);
 
-  const handleVerify = async (e) => {
-    e.preventDefault();
-    setMessage('');
-    setLoading(true);
+  const handleChange = (e, index) => {
+    const newOtp = [...otp];
+    newOtp[index] = e.target.value.slice(-1); // allow only one digit
 
+    setOtp(newOtp);
 
+    if (e.target.value && index < otp.length - 1) {
+      document.getElementById(`otp-input-${index + 1}`).focus();
+    }
+
+    // Check if all digits are filled
+    if (newOtp.every((digit) => digit !== '')) {
+      handleVerify(newOtp.join(''));
+    }
+  };
+
+  const handleVerify = async (otpValue) => {
     if (!email) {
       setMessage('Email is missing');
-      setLoading(false);
       return;
     }
 
+    setMessage('');
+    setLoading(true);
+
     try {
-      const response = await axios.post('https://eventhon.onrender.com/api/auth/opt-verfy', { email, otp }, { withCredentials: true });
+      const response = await axios.post(
+        'https://eventhon.onrender.com/api/auth/opt-verfy',
+        { email, otp: otpValue },
+        { withCredentials: true }
+      );
       setMessage(response.data.message);
       navigate('/login');
     } catch (error) {
@@ -44,25 +60,29 @@ const OtpVerifyPage = () => {
 
   return (
     <div className="otp-container">
-      <form className="otp-form" onSubmit={handleVerify}>
+      <form className="otp-form" onSubmit={(e) => e.preventDefault()}>
         <h2>OTP Verification</h2>
-        {/* <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        /> */}
-        <input
-          type="text"
-          placeholder="Enter OTP"
-          value={otp}
-          onChange={(e) => setOtp(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={loading}>
+        <div className="otp-inputs">
+          {otp.map((digit, index) => (
+            <input
+              key={index}
+              type="text"
+              id={`otp-input-${index}`}
+              value={digit}
+              onChange={(e) => handleChange(e, index)}
+              maxLength="1"
+              required
+              autoFocus={index === 0}
+            />
+          ))}
+        </div>
+
+        {/* You can hide this button or keep it just in case */}
+        {/* <button type="submit" disabled={loading}>
           {loading ? 'Verifying...' : 'Verify OTP'}
-        </button>
+        </button> */}
+
+        {loading && <p>Verifying...</p>}
         {message && <p className="message">{message}</p>}
       </form>
     </div>
