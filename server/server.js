@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 app.use(cors({
-    origin: "https://eventhon.netlify.app",
+    origin: "http://localhost:5173",
     credentials: true
 }));
 
