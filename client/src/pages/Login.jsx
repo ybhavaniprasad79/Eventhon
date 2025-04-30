@@ -23,6 +23,7 @@ export default function Login() {
             return;
         }
 
+        setMessage("Logining you in...");
         const loginData = { email, password };
 
         try {

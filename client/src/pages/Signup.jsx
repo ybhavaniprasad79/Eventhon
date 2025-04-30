@@ -20,15 +20,13 @@ export default function Signup() {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-    
-        // Show message instantly when the button is clicked
-        setMessage("Signing you up...");
-    
+
         if (!isValidEmail(email)) {
             setMessage("Please enter a valid email address.");
             return;
         }
-    
+             setMessage("Signing you up...");
+             
         const formData = { name, email, password, role };
     
         try {
