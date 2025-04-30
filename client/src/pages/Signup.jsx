@@ -20,26 +20,28 @@ export default function Signup() {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        setMessage("");
-
+    
+        // Show message instantly when the button is clicked
+        setMessage("Signing you up...");
+    
         if (!isValidEmail(email)) {
             setMessage("Please enter a valid email address.");
             return;
         }
-
+    
         const formData = { name, email, password, role };
-
+    
         try {
             const res = await axios.post(
                 "https://eventhon.onrender.com/api/auth/register",
                 formData,
-                { withCredentials: true } // if backend uses cookies/sessions
+                { withCredentials: true }
             );
-
+    
             setMessage("Signup successful! Redirecting to OTP...");
             setTimeout(() => {
-                navigate('/otp-verfy', { state: { email } }); // Pass the email via state
-              }, 2000);
+                navigate("/otp-verfy", { state: { email } });
+            }, 2000);
         } catch (error) {
             if (error.response?.status === 409) {
                 setMessage("User already exists. Redirecting to login...");
@@ -48,7 +50,7 @@ export default function Signup() {
                 setMessage(error.response?.data?.message || "Signup failed. Try again.");
             }
         }
-    };
+    };    
 
     return (
         <div style={{

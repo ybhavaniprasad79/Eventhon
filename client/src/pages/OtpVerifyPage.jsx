@@ -9,8 +9,7 @@ const OtpVerifyPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { email } = location.state || {};
+  const email = location.state?.email;
 
   useEffect(() => {
     if (!email) {
@@ -20,14 +19,16 @@ const OtpVerifyPage = () => {
 
   const handleChange = (e, index) => {
     const newOtp = [...otp];
-    newOtp[index] = e.target.value.slice(-1); // allow only one digit
+    newOtp[index] = e.target.value.slice(-1); // Only keep last digit
 
     setOtp(newOtp);
 
+    // Move to next input
     if (e.target.value && index < otp.length - 1) {
       document.getElementById(`otp-input-${index + 1}`).focus();
     }
 
+    // Auto-submit if all fields are filled
     if (newOtp.every((digit) => digit !== '')) {
       handleVerify(newOtp.join(''));
     }
@@ -85,7 +86,10 @@ const OtpVerifyPage = () => {
           OTP Verification
         </h2>
 
-        <form style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }} onSubmit={(e) => e.preventDefault()}>
+        <form
+          style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div style={{ display: "flex", gap: "10px" }}>
             {otp.map((digit, index) => (
               <input
@@ -110,7 +114,16 @@ const OtpVerifyPage = () => {
           </div>
 
           {loading && <p style={{ color: "blue" }}>Verifying...</p>}
-          {message && <p style={{ color: message.includes('success') ? "green" : "red", fontWeight: "bold" }}>{message}</p>}
+          {message && (
+            <p
+              style={{
+                color: message.toLowerCase().includes('success') ? "green" : "red",
+                fontWeight: "bold"
+              }}
+            >
+              {message}
+            </p>
+          )}
         </form>
       </div>
     </div>
