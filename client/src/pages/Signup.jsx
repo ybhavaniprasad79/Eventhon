@@ -26,7 +26,7 @@ export default function Signup() {
             return;
         }
              setMessage("Signing you up...");
-             
+
         const formData = { name, email, password, role };
     
         try {
@@ -43,9 +43,9 @@ export default function Signup() {
         } catch (error) {
             if (error.response?.status === 409) {
                 setMessage("User already exists. Redirecting to login...");
-                setTimeout(() => navigate("/"), 2000);
+                setTimeout(() => navigate("/login"), 2000);
             } else {
-                setMessage(error.response?.data?.message || "Signup failed. Try again.");
+                setMessage(error.response?.data?.message || "Something went wrong. Please try again later");
             }
         }
     };    

@@ -17,15 +17,15 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
+    
         if (!isValidEmail(email)) {
             setMessage("Please enter a valid email address.");
             return;
         }
-
-        setMessage("Logining you in...");
+    
+        setMessage("Logging you in...");
         const loginData = { email, password };
-
+    
         try {
             const response = await axios.post("https://eventhon.onrender.com/api/auth/login", loginData);
             if (response.data.token) {
@@ -36,10 +36,16 @@ export default function Login() {
                 setMessage("Invalid email or password.");
             }
         } catch (error) {
-            console.error("Login error: ", error);
-            setMessage("Login failed. Please check your credentials.");
+            if (error.response && error.response.status === 401) {
+                setMessage("Invalid email or password.");
+            } else if (error.response && error.response.status === 404) {
+                setMessage(error.response.data.message || "User not found.");
+            } else {
+                setMessage("Something went wrong. Please try again later.");
+            }
         }
     };
+    
 
     return (
         <div style={{
